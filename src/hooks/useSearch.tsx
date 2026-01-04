@@ -12,6 +12,7 @@ export function useSearch(query: string, lang: Lang) {
     useEffect(() => {
         if (!query.trim()) {
             setData([]);
+            setError("");
             return;
         }
 
@@ -22,28 +23,27 @@ export function useSearch(query: string, lang: Lang) {
                 setLoading(true);
                 setError("");
 
+                const params = {
+                    page: 1,
+                    per_page: 100,
+                    search: query,
+                    order: "desc" as const,
+                    short: 1,
+                    ...(lang === "en" ? { type: lang } : { section: "uz" }),
+                };
+
                 const res = await axios.get<SearchResponse>(
                     "https://api.wisdomedu.uz/api/catalogue/search",
-                    {
-                        params: {
-                            page: 1,
-                            per_page: 100,
-                            search: query,
-                            order: "desc",
-                            short: 1,
-                            type: lang,
-                        },
-                        signal: controller.signal,
-                    }
+                    { params, signal: controller.signal }
                 );
 
                 setData(res.data.data);
             } catch (err) {
                 if (axios.isCancel(err)) return;
 
-                const error = err as AxiosError<any>;
+                const axiosError = err as AxiosError<{ message?: string }>;
                 setError(
-                    error.response?.data?.message ?? "Failed to fetch data"
+                    axiosError.response?.data?.message ?? "Failed to fetch data"
                 );
             } finally {
                 setLoading(false);

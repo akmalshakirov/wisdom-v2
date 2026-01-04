@@ -1,13 +1,16 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
-import "./index.css";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
+import { Click } from "./components/ui/click/index.ts";
+import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
         <ErrorBoundary>
-            <App />
+            <Click>
+                <App />
+            </Click>
         </ErrorBoundary>
     </BrowserRouter>
 );

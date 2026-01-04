@@ -8,6 +8,7 @@ export interface WordItem {
     word: string;
     word_class: WordClass | null;
     translation: string[];
+    length: number;
 }
 
 export interface SearchResponse {
@@ -22,18 +23,19 @@ export interface SearchResponse {
 }
 
 export interface WordDetail {
-    id: number;
+    id?: number;
     word: string;
-    example: string | null;
-    examples: string | null;
+    example?: string | null;
+    examples?: string | null;
     word_class: {
         id: number;
         class: string;
     };
-    word_class_body: string | null;
+    word_class_body?: string | null;
     words_uz: {
         id: number;
         word: string;
         example: string | null;
     }[];
+    length?: number;
 }
