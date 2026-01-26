@@ -32,6 +32,7 @@ const SearchInput = () => {
         if (debouncedUrlQuery !== urlQuery) {
             setParams({ q: debouncedUrlQuery, lang }, { replace: true });
         }
+        document.title = "Wisdom v2";
     }, [debouncedUrlQuery, lang, urlQuery, setParams]);
 
     const { data, loading, error } = useSearch(debouncedSearchQuery, lang);
@@ -64,13 +65,13 @@ const SearchInput = () => {
         (newLang: "en" | "uz") => {
             setParams({ q: localQuery, lang: newLang }, { replace: true });
         },
-        [localQuery, setParams]
+        [localQuery, setParams],
     );
 
     const hasResults = useMemo(() => data && data.length > 0, [data]);
     const hasQuery = useMemo(
         () => debouncedSearchQuery.trim().length > 0,
-        [debouncedSearchQuery]
+        [debouncedSearchQuery],
     );
 
     const StatusDisplay = useMemo(() => {
@@ -78,7 +79,7 @@ const SearchInput = () => {
             return (
                 <div className='flex items-center gap-3'>
                     <div className='w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin' />
-                    <p className='text-gray-600'>Qidirilmoqda...</p>
+                    <p className='text-gray-600'>Searching...</p>
                 </div>
             );
         }
@@ -98,13 +99,13 @@ const SearchInput = () => {
                             d='M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
                         />
                     </svg>
-                    <p className='font-medium'>Xatolik yuz berdi</p>
+                    <p className='font-medium'>Something went wrong!</p>
                     <p className='text-sm mt-1'>{error}</p>
                 </div>
             );
         }
 
-        if (hasQuery && !loading) {
+        if (hasQuery && !loading && data !== null && data.length === 0) {
             return (
                 <div className='text-gray-500'>
                     <svg
@@ -119,8 +120,8 @@ const SearchInput = () => {
                             d='M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
                         />
                     </svg>
-                    <p className='font-medium'>Hech narsa topilmadi!</p>
-                    <p className='text-sm mt-1'>Boshqa so'z qidiring.</p>
+                    <p className='font-medium'>Nothing found!</p>
+                    <p className='text-sm mt-1'>Search for another word.</p>
                 </div>
             );
         }
@@ -139,13 +140,11 @@ const SearchInput = () => {
                         d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
                     />
                 </svg>
-                <p className='font-medium'>Qidirishni boshlang.</p>
-                <p className='text-sm mt-1'>
-                    Natijalar shu yerda ko'rsatiladi.
-                </p>
+                <p className='font-medium'>Start searching.</p>
+                <p className='text-sm mt-1'>The results will appear here.</p>
             </div>
         );
-    }, [loading, error, hasQuery]);
+    }, [loading, error, hasQuery, data]);
 
     return (
         <div className='w-full max-w-3xl mx-auto px-4'>
@@ -169,12 +168,30 @@ const SearchInput = () => {
                     ref={inputRef}
                     value={localQuery}
                     onChange={onInputChange}
-                    placeholder='Press "/" to focus and search'
+                    placeholder='Hit "/" to focus and search'
                     autoComplete='off'
                     autoFocus
                     name='word'
                     className='flex-1 px-4 py-3 pl-0 focus:outline-none text-gray-800 placeholder:text-gray-400'
                 />
+
+                <button
+                    className='border rounded-lg border-gray-500/50 px-3 cursor-pointer outline-none *:stroke-[#227680] focus:bg-primary focus:*:stroke-white transition not-focus:hover:bg-gray-400/20'
+                    onClick={() => setLocalQuery("")}>
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='20'
+                        height='20'
+                        viewBox='0 0 24 24'
+                        stroke='currentColor'
+                        strokeWidth='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        className='lucide lucide-x-icon lucide-x'>
+                        <path d='M18 6 6 18' />
+                        <path d='m6 6 12 12' />
+                    </svg>
+                </button>
 
                 <div className='flex gap-2'>
                     {(["en", "uz"] as const).map((l) => (

@@ -29,7 +29,7 @@ const WordDetailPage = () => {
 
                 const response = await axios.get(
                     `https://api.wisdomedu.uz/api/word/${id}`,
-                    { params: { lang } }
+                    { params: { lang } },
                 );
 
                 document.title = `Wisdom v2 - ${response.data?.word || "Word"}`;
@@ -59,7 +59,6 @@ const WordDetailPage = () => {
         return <WordSkeleton />;
     }
 
-    // ✅ TO'G'RI tekshiruv - data obyekt, array emas!
     if (!data || error) {
         return (
             <div className='bg-primary h-screen flex flex-col gap-5 items-center justify-center'>
@@ -78,13 +77,13 @@ const WordDetailPage = () => {
                             fill='#000'>
                             <path d='M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z' />
                         </svg>
-                        Ortga
+                        Back
                     </button>
                     <p className='text-white'>yoki</p>
                     <button
                         onClick={() => window.location.reload()}
                         className='flex items-center justify-center rounded-2xl py-3 bg-white cursor-pointer outline-none px-4 hover:bg-white/90 transition active:translate-y-1'>
-                        Yangilash
+                        Refresh
                     </button>
                 </div>
             </div>
@@ -96,7 +95,7 @@ const WordDetailPage = () => {
             <div className='container max-w-3xl mx-auto px-4 py-10'>
                 <button
                     onClick={handleBack}
-                    className='flex w-full items-center justify-center rounded-2xl py-3 bg-white mb-4 cursor-pointer outline-none px-4 hover:bg-white/90 transition active:translate-y-1'>
+                    className='flex w-full items-center justify-center rounded-2xl py-3 bg-white mb-4 cursor-pointer outline-none px-4 hover:bg-white/90 transition active:translate-y-1 focus:bg-white/80'>
                     <svg
                         xmlns='http://www.w3.org/2000/svg'
                         height='18px'
@@ -105,7 +104,7 @@ const WordDetailPage = () => {
                         fill='#000'>
                         <path d='M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z' />
                     </svg>
-                    Ortga
+                    Back
                 </button>
 
                 <div className='bg-white rounded-3xl shadow-xl p-6'>
@@ -116,7 +115,7 @@ const WordDetailPage = () => {
 
                         <button
                             onClick={() => speakWord(data.word, lang)}
-                            className='flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-white hover:opacity-90 transition cursor-pointer active:translate-y-1'>
+                            className='flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-white hover:opacity-90 transition cursor-pointer active:translate-y-1 outline-none focus:bg-blue-800'>
                             <svg
                                 xmlns='http://www.w3.org/2000/svg'
                                 height='24px'
@@ -125,7 +124,7 @@ const WordDetailPage = () => {
                                 fill='#fff'>
                                 <path d='M560-131v-82q90-26 145-100t55-168q0-94-55-168T560-749v-82q124 28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm440 40v-322q47 22 73.5 66t26.5 96q0 51-26.5 94.5T560-320ZM400-606l-86 86H200v80h114l86 86v-252ZM300-480Z' />
                             </svg>
-                            Tinglash
+                            Listen
                         </button>
                     </div>
 
@@ -139,7 +138,9 @@ const WordDetailPage = () => {
 
                 {data.words_uz && data.words_uz.length > 0 && (
                     <section className='mt-6 bg-white rounded-2xl shadow p-6'>
-                        <h2 className='text-xl font-semibold mb-3'>Tarjima</h2>
+                        <h2 className='text-xl font-semibold mb-3'>
+                            Translation
+                        </h2>
                         <ul className='flex flex-wrap gap-2'>
                             {data.words_uz.map((w) => (
                                 <li

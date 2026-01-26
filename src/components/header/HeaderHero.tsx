@@ -14,7 +14,7 @@ const HeaderHero = () => {
 
     return (
         <div
-            className={`bg-primary min-h-dvh h-screen flex items-center flex-col transition-all duration-300 ${
+            className={`bg-primary min-h-dvh flex items-center flex-col transition-all duration-300 ${
                 centered ? "pt-[30vh]" : "pt-[15vh]"
             }`}>
             <div className='w-full'>
